@@ -1,0 +1,30 @@
+---
+- name: Hello Ansible - quick start
+  hosts: rpi
+  become_user: root
+  become: yes
+
+  tasks:  
+    - name: install jenkins key
+      apt_key:    
+        url: https://jenkins-ci.org/debian/jenkins-ci.org.key
+        state: present
+
+    - name: add repro
+      lineinfile:
+        path: /etc/apt/sources.list.d/jenkins.list
+        line: 'deb http://pkg.jenkins-ci.org/debian binary'
+
+    - name: Update apt-get cache
+      apt: >
+        update_cache=yes
+        cache_valid_time=360
+          
+    - name: Update all packages to the latest version
+      apt: > 
+        upgrade=yes
+ 
+    - name: Update repositories cache and install package
+      apt: 
+        name: jenkins
+
