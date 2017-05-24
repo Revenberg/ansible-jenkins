@@ -10,10 +10,15 @@
         url: https://jenkins-ci.org/debian/jenkins-ci.org.key
         state: present
 
-    - name: add repro
+    - name: add repro jenkins
       lineinfile:
         path: /etc/apt/sources.list.d/jenkins.list
         line: 'deb http://pkg.jenkins-ci.org/debian binary'
+
+    - name: add repro Artifactory
+      lineinfile:
+        path: /etc/apt/sources.list.d/jenkins.list
+        line: 'deb https://jfrog.bintray.com/artifactory-pro-debs {distribution} {components}'
 
     - name: Update apt-get cache
       apt: >
@@ -24,7 +29,8 @@
       apt: > 
         upgrade=yes
  
-    - name: Update repositories cache and install package
-      apt: 
-        name: jenkins
-
+    - name: Update repositories cache and install package jfrog-artifactory-pro
+      apt: name={{item}} state=installed
+      with_items:
+        - jenkins
+        - jfrog-artifactory-pro
