@@ -23,7 +23,7 @@
     - name: Update apt-get cache
       apt: >
         update_cache=yes
-        cache_valid_time=360
+        cache_valid_time=0
           
     - name: Update all packages to the latest version
       apt: > 
